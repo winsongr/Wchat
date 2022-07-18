@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "578966338219",
+    "project_id": "w-chatapp",
+    "storage_bucket": "w-chatapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:578966338219:android:f6d09e88f58a5b059a15ee",
+        "android_client_info": {
+          "package_name": "com.winson.chatapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "578966338219-7994alpm43vmqgoqmj4asgc4bako6vga.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.winson.chatapp",
+            "certificate_hash": "1a2d6c1760b09f110809cf40bf348aaf2679f790"
+          }
+        },
+        {
+          "client_id": "578966338219-7ik80is8rfngpomdlntdqr72r0j0b69j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1Bs18iD55UBBqwnm84bYbZraxtF1tqgI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "578966338219-7ik80is8rfngpomdlntdqr72r0j0b69j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
