@@ -80,7 +80,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       },
                       style: ButtonStyle(
                           backgroundColor:
-                              MaterialStateProperty.all(Colors.grey)),
+                              MaterialStateProperty.all(Colors.white)),
                       child: Row(children: [
                         Image.asset(
                           "assets/google.png",
@@ -93,7 +93,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           "Sign In With Google",
                           textScaleFactor: textscale,
                           style:
-                              tstyle.bodyLarge!.copyWith(color: Colors.white),
+                              tstyle.bodyLarge!.copyWith(color: Colors.black),
                         )
                       ]))),
             ],
