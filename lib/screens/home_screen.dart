@@ -27,10 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
               onPressed: () async {
                 await FirebaseAuth.instance.signOut();
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => AuthScreen()),
-                    (route) => false);
+                Get.offAll( ()=> const AuthScreen());
               },
               icon: const Icon(Icons.logout))
         ],

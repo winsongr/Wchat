@@ -1,4 +1,5 @@
 import 'package:chatapp/main.dart';
+import 'package:chatapp/splash.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -39,8 +40,7 @@ class _AuthScreenState extends State<AuthScreen> {
         'date': DateTime.now(),
       });
     }
-    Navigator.pushAndRemoveUntil(context,
-        MaterialPageRoute(builder: (context) => MyApp()), (route) => false);
+    Get.offAll(() => Splash());
   }
 
   @override
