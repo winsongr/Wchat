@@ -1,9 +1,4 @@
-import 'package:chatapp/model/user_model.dart';
-import 'package:chatapp/screens/auth_screen.dart';
-import 'package:chatapp/screens/home_screen.dart';
-import 'package:chatapp/splash.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:chatapp/auth_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -31,6 +26,6 @@ class _MyAppState extends State<MyApp> {
           primarySwatch: Colors.blue,
         ),
         debugShowCheckedModeBanner: false,
-        home: Splash());
+        home: const AuthCheck());
   }
 }

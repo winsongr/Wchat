@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 import 'screens/auth_screen.dart';
 import 'screens/home_screen.dart';
 
-class Splash extends StatefulWidget {
-  Splash({Key? key}) : super(key: key);
+class AuthCheck extends StatefulWidget {
+  const AuthCheck({Key? key}) : super(key: key);
 
   @override
-  State<Splash> createState() => _SplashState();
+  State<AuthCheck> createState() => _AuthCheckState();
 }
 
-class _SplashState extends State<Splash> {
+class _AuthCheckState extends State<AuthCheck> {
   Future<Widget> usersignedIn() async {
     User? user = FirebaseAuth.instance.currentUser;
 

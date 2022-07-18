@@ -1,5 +1,4 @@
-import 'package:chatapp/main.dart';
-import 'package:chatapp/splash.dart';
+import 'package:chatapp/auth_check.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +39,7 @@ class _AuthScreenState extends State<AuthScreen> {
         'date': DateTime.now(),
       });
     }
-    Get.offAll(() => Splash());
+    Get.offAll(() => AuthCheck());
   }
 
   @override
