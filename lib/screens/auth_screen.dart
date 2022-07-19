@@ -1,4 +1,6 @@
-import 'package:chatapp/auth_check.dart';
+import 'package:chatapp/constants/constants.dart';
+import 'package:chatapp/service/auth_check.dart';
+import 'package:chatapp/widgets/custom_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +31,6 @@ class _AuthScreenState extends State<AuthScreen> {
     DocumentSnapshot userExist =
         await firestore.collection('users').doc(userCredential.user!.uid).get();
     if (userExist.exists) {
-      print(userCredential.user!.email);
     } else {
       await firestore.collection('users').doc(userCredential.user!.uid).set({
         'email': userCredential.user!.email,
@@ -39,13 +40,12 @@ class _AuthScreenState extends State<AuthScreen> {
         'date': DateTime.now(),
       });
     }
-    Get.offAll(() => AuthCheck());
+    Get.offAll(() => const AuthCheck());
   }
 
   @override
   Widget build(BuildContext context) {
     var tstyle = Theme.of(context).textTheme;
-    var textscale = Get.textScaleFactor;
     return SafeArea(
       child: Scaffold(
         body: Center(
@@ -64,10 +64,9 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                 ),
               ),
-              Text(
-                "Chat App",
-                textScaleFactor: textscale,
-                style: tstyle.titleLarge!.copyWith(color: Colors.green),
+              CustomText(
+                text: "WChat",
+                txtstyle: tstyle.titleLarge!.copyWith(color: AppColors.green),
               ),
               SizedBox(
                 height: Get.height * 0.2,
@@ -80,7 +79,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       },
                       style: ButtonStyle(
                           backgroundColor:
-                              MaterialStateProperty.all(Colors.white)),
+                              MaterialStateProperty.all(AppColors.white)),
                       child: Row(children: [
                         Image.asset(
                           "assets/google.png",
@@ -89,11 +88,10 @@ class _AuthScreenState extends State<AuthScreen> {
                         const SizedBox(
                           width: 15,
                         ),
-                        Text(
-                          "Sign In With Google",
-                          textScaleFactor: textscale,
-                          style:
-                              tstyle.bodyLarge!.copyWith(color: Colors.black),
+                        CustomText(
+                          txtstyle: tstyle.bodyLarge!
+                              .copyWith(color: AppColors.black),
+                          text: 'Sign In With Google',
                         )
                       ]))),
             ],

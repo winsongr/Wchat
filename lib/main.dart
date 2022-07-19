@@ -1,4 +1,4 @@
-import 'package:chatapp/auth_check.dart';
+import 'package:chatapp/service/auth_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,9 +21,9 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-        title: 'Flutter Demo',
+        title: 'Wchat',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.green,
         ),
         debugShowCheckedModeBanner: false,
         home: const AuthCheck());

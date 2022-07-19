@@ -1,6 +1,8 @@
+import 'package:chatapp/constants/constants.dart';
 import 'package:chatapp/model/user_model.dart';
+import 'package:chatapp/screens/chat_screen.dart';
+import 'package:chatapp/widgets/custom_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -22,21 +24,25 @@ class _SearchScreenState extends State<SearchScreen> {
     });
     await FirebaseFirestore.instance
         .collection('users')
-        .where('name', isEqualTo: searchController.text)
+        .where('email'.toLowerCase(),
+            isEqualTo: searchController.text.toLowerCase().trim())
         .get()
         .then((value) {
       if (value.docs.isEmpty) {
-        Get.snackbar("Oh Noo", "No Users Found ");
+        Get.snackbar("Oh Noo", "No Users Found on this email found",
+            snackPosition: SnackPosition.BOTTOM,
+            padding: const EdgeInsets.all(10),
+            margin: const EdgeInsets.all(10));
         setState(() {
           isLoading = false;
         });
         return;
       }
-      value.docs.forEach((user) {
+      for (var user in value.docs) {
         if (user.data()['email'] != widget.user.email) {
           searchResult.add(user.data());
         }
-      });
+      }
       setState(() {
         isLoading = false;
       });
@@ -45,8 +51,15 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var tstyle = Theme.of(context).textTheme;
+
     return Scaffold(
-      appBar: AppBar(title: Text("Search Chat")),
+      appBar: AppBar(
+        title: CustomText(txtstyle: tstyle.titleSmall!.copyWith(
+          color: AppColors.white
+        ), text: "Search Chat"),
+        backgroundColor: AppColors.green,
+      ),
       body: Column(
         children: [
           Row(
@@ -54,20 +67,25 @@ class _SearchScreenState extends State<SearchScreen> {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
-                  child: TextField(
-                    controller: searchController,
-                    decoration: InputDecoration(
-                        hintText: "Type Username...",
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10))),
+                  child: SizedBox(height: 45,
+                    child: TextField(
+                      controller: searchController,
+                      decoration: InputDecoration(
+                          hintText: "Type Username...",
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10))),
+                    ),
                   ),
                 ),
               ),
-              IconButton(
-                  onPressed: () {
-                    onSearch();
-                  },
-                  icon: Icon(Icons.search))
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: IconButton(
+                    onPressed: () {
+                      onSearch();
+                    },
+                    icon: const Icon(Icons.search)),
+              )
             ],
           ),
           if (searchResult.length.isGreaterThan(0))
@@ -77,13 +95,27 @@ class _SearchScreenState extends State<SearchScreen> {
                   return ListTile(
                     leading: CircleAvatar(
                       radius: 25,
-                      child: Image.network(searchResult[index]['image']),
+                      backgroundImage:
+                          NetworkImage(searchResult[index]['image']),
                     ),
-                    title: Text(searchResult[index]['name']),
-                    subtitle: Text(searchResult[index]['email']),
+                    title: CustomText(
+                        txtstyle: tstyle.titleMedium!,
+                        text: searchResult[index]['name']),
+                    subtitle: CustomText(
+                        txtstyle: tstyle.bodyMedium!,
+                        text: searchResult[index]['email']),
                     trailing: IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.message),
+                      onPressed: () {
+                        setState(() {
+                          searchController.text = "";
+                        });
+                        Get.to(() => ChatScreen(
+                            currentUser: widget.user,
+                            friendId: searchResult[index]['uid'],
+                            friendName: searchResult[index]['name'],
+                            friendImage: searchResult[index]['image']));
+                      },
+                      icon: const Icon(Icons.message),
                     ),
                   );
                 }),
@@ -92,9 +124,9 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
             )
           else if (isLoading == true)
-            Center(
+            const Center(
                 child: CircularProgressIndicator(
-              color: Colors.amber,
+              color: AppColors.amber,
             ))
         ],
       ),
