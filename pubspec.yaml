@@ -40,6 +40,9 @@ dependencies:
   google_sign_in: ^5.4.0
   get: ^4.6.5
   cached_network_image: ^3.2.1
+  firebase_messaging: ^13.0.3
+  cloud_functions: ^3.3.8
+  flutter_local_notifications: ^11.0.0
 
 dev_dependencies:
   flutter_test:

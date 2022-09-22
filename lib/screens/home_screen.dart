@@ -3,10 +3,13 @@ import 'package:chatapp/model/user_model.dart';
 import 'package:chatapp/screens/auth_screen.dart';
 import 'package:chatapp/screens/chat_screen.dart';
 import 'package:chatapp/screens/search_screen.dart';
+import 'package:chatapp/service/registernotification.dart';
 import 'package:chatapp/widgets/custom_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -19,9 +22,83 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+  void configureLocalNotification() {
+    AndroidInitializationSettings androidInitializationSettings =
+        const AndroidInitializationSettings('chat');
+
+    InitializationSettings initializationSettings =
+        InitializationSettings(android: androidInitializationSettings);
+
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  void showNotification(RemoteNotification remoteNotification) async {
+    AndroidNotificationDetails androidNotificationDetails =
+        const AndroidNotificationDetails(
+      "com.winson.chatapp",
+      "Wchat",
+      playSound: true,
+      enableVibration: true,
+      importance: Importance.max,
+      priority: Priority.high,
+    );
+    NotificationDetails notificationDetails =
+        NotificationDetails(android: androidNotificationDetails);
+    await flutterLocalNotificationsPlugin.show(0, remoteNotification.title,
+        remoteNotification.body, notificationDetails,
+        payload: null);
+  }
+
+  void registerNotification() {
+    firebaseMessaging.requestPermission();
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      if (message.notification != null) {
+        {
+          showNotification(message.notification!);
+        }
+        return;
+      }
+    });
+    firebaseMessaging.getToken().then((token) {
+      if (token != null) {
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(widget.user.uid)
+            .update({'pushToken': token});
+      }
+    });
+  }
+  // firebaseMessaging.configure(onMessage: (Map<String, dynamic> message) {
+  //   print('onMessage: $message');
+  //   Platform.isAndroid
+  //       ? showNotification(message['notification'])
+  //       : showNotification(message['aps']['alert']);
+  //   return;
+  // }, onResume: (Map<String, dynamic> message) {
+  //   print('onResume: $message');
+  //   return;
+  // }, onLaunch: (Map<String, dynamic> message) {
+  //   print('onLaunch: $message');
+  //   return;
+  // });
+
+  // firebaseMessaging.getToken().then((token) {
+  //   print('token: $token');
+  //   Firestore.instance
+  //       .collection('users')
+  //       .document(currentUserId)
+  //       .updateData({'pushToken': token});
+  // }).catchError((err) {
+  //   Fluttertoast.showToast(msg: err.message.toString());
+  // });
   @override
   void initState() {
     super.initState();
+    registerNotification();
+    configureLocalNotification();
   }
 
   @override
